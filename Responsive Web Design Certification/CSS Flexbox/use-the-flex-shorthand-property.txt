@@ -1,0 +1,22 @@
+<style>
+  #box-container {
+    display: flex;
+    height: 500px;
+  }
+  #box-1 {
+    flex: 2 2 150px;
+    background-color: dodgerblue;
+    height: 200px;
+  }
+
+  #box-2 {
+    flex: 1 1 150px;
+    background-color: orangered;
+    height: 200px;
+  }
+</style>
+
+<div id="box-container">
+  <div id="box-1"></div>
+  <div id="box-2"></div>
+</div>
