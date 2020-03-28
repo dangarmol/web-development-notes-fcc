@@ -1,0 +1,75 @@
+#header-img {
+	width: auto;
+	max-height: 100px;
+	max-width: 100px;
+	height: 100%;
+}
+
+#header {
+	background-color: black;
+	display: flex;
+	height: 20vh;
+	vertical-align: middle;
+}
+
+#body {
+	background-color: black;
+}
+
+#page-title {
+	color: white;
+	font-family: Montserrat;
+	height: 50%;
+  	line-height: 50%;
+}
+
+#video {
+	height: 400px;
+	width: 100%;
+}
+
+#email-label {
+	color: white;
+	font-family: Montserrat;
+}
+
+#email {
+	width: 40%;
+}
+
+.center {
+	text-align: center;
+}
+
+.nav-link {
+	color: white;
+	text-decoration: none;
+	font-size: 20px;
+	font-family: Lato;
+}
+
+.nav-link:hover {
+	color: gray;
+}
+
+section {
+	margin: 0 auto;
+	width: 50vw;
+}
+
+nav {
+	float: right;
+}
+
+nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+nav li {
+	display: inline-block;
+	margin-left: 70px;
+	padding: 17px;
+	position: middle;
+}
