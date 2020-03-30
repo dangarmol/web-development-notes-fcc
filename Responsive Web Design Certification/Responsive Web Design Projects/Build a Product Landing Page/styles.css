@@ -2,18 +2,22 @@
 	width: auto;
 	max-height: 100px;
 	max-width: 100px;
-	height: 100%;
+   height: 100%;
 }
 
 #header {
 	background-color: black;
 	display: flex;
 	height: 20vh;
+	width: 100%;
 	vertical-align: middle;
+	position: fixed;
+	top: 0;
 }
 
 #body {
 	background-color: black;
+	margin-top: 200px;
 }
 
 #page-title {
@@ -35,6 +39,16 @@
 
 #email {
 	width: 40%;
+}
+
+#prices-image {
+	width: 100%;
+}
+
+@media (min-width: 1600px) {
+	#prices-image {
+		width: 800px;
+	}
 }
 
 .center {
