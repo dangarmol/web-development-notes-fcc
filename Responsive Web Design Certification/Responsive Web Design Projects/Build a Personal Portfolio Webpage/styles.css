@@ -1,0 +1,101 @@
+:root {
+	background-color: black;
+	color: #00ff00;
+	font-family: Monospace;
+}
+
+h1 {
+	font-family: Monospace;
+	color: #00ff00;
+	font-size: 60px;
+}
+
+h2 {
+	font-family: Monospace;
+	color: #00ff00;
+	font-size: 20px;
+}
+
+p {
+	color: black;
+}
+
+li {
+	color: white;
+}
+
+.nav-link {
+	color: #0f0;
+	font-size: 30px;
+}
+
+#social {
+	margin-top: 2vh;
+}
+
+#welcome-section {
+	height: 100vh;
+	display: grid;
+	grid-template-columns: 50vw 50vw;
+	grid-gap: 3vw;
+	text-align: center;
+}
+
+@media (max-width: 768px) {
+	#welcome-section {
+		height: 100vh;
+		display: grid;
+		grid-template-columns: 50vw;
+		grid-gap: 3vw;
+	}
+}
+
+#social-div {
+	display: grid;
+	grid-template-columns: 30vw 30vw 30vw;
+	grid-gap: 3vw;
+	margin-left: 10vw;
+	margin-right: 10vw;
+}
+
+#navbar {
+	position: fixed;
+	background-color: #333;
+	width: 100vw;
+	margins: 0px;
+}
+
+li {
+	display: inline;
+	padding: 50px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.social-image {
+	max-width: 10vw;
+	max-height: 10vw;
+}
+
+.project-tile {
+	background-color: darkgray;
+	display: inline-block;
+	text-align: center;
+}
+
+.project-image {
+	width: 90%;
+	length: auto;
+	margin-top: 10px;
+}
+
+#projects {
+	display: grid;
+	grid-template-columns: 30vw 30vw 30vw;
+	grid-gap: 3vw;
+	margin-top: 20px;
+}
