@@ -40,7 +40,6 @@ function calculateChange(change, cid) {
     }
   }
   let response = [];
-  console.log(cashLeft);
   if(change == 0) {
     if(cashLeft < 0.1) {
       response.push("CLOSED");
