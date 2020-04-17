@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Special+Elite&display=swap');
+
+#text {
+	font-family: 'Special Elite';
+	font-size: 22px;
+}
+
+#author {
+	font-family: 'Abril Fatface';
+	font-size: 25px;
+}
+
+#buttons-well {
+	justify-content: around;
+}
+
+#quote-box {
+	border-radius: 25px;
+	background-color: #d3d3d3;
+	max-width: 50vw;
+	max-height: 50vh;
+	padding: 50px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#container {
+	background-image: url("https://farm6.staticflickr.com/5469/16783837234_d8eee7d83c_h.jpg");
+	background-color: #FFFFBF;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	height: 100vh;
+}
