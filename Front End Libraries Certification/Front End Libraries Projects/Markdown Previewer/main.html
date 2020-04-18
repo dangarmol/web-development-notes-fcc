@@ -1,0 +1,22 @@
+<head>
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="scripts.js"></script>
+</head>
+
+<div class="background">
+	<h1 id="title" class="text-center text-light">GitHub-ish Markdown Previewer</h1>
+	<div class="centered-wrapper">
+		<div class="section-label controlled-width">Editor</div>
+		<textarea id="editor" class="controlled-width"># Write your text here, it will be processed and shown below!</textarea>
+	</div>
+	<br>
+	<div class="centered-wrapper">
+		<div id="previewer-label" class="section-label controlled-width">Previewer</div>
+		<div id="preview" class="controlled-width">
+		</div>
+	</div>
+</div>

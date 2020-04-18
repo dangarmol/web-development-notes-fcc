@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Lexend+Giga&display=swap');
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+	.controlled-width {
+		width: 90vw;
+		height: 50vh;
+	}
+}
+
+/* Larger devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+	.controlled-width {
+		width: 60vw;
+		height: 30vh;
+	}
+}
+
+.controlled-width {
+		width: 60vw;
+}
+
+.centered-wrapper {
+	text-align: center;
+}
+
+.section-label {
+	border-style: ridge;
+	border-color: gray;
+	margin: auto;
+	background-color: green;
+	font-family: "Anton";
+}
+
+#title {
+	font-family: "Lexend Giga";
+}
+
+#preview {
+	background-color: #ddd;
+	margin: auto;
+	min-height: 100px;
+	text-align: left;
+	padding: 5px;
+	border: 3px solid gray;
+}
+
+#previewer-label {
+	background-color: orange;
+}
+
+#editor {
+	height: 30vh;
+	font-family: "Monospace";
+}
+
+textarea {  
+   font-family:"Monospace";
+   font-size: 14px;   
+	color: #41FF00;
+	background-color: black;
+}
+
+.background {
+	background-image: url("https://images.unsplash.com/photo-1533637267520-4dfd6aa7ee93?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2734&q=80");
+	background-repeat: no-repeat;
+	background-position: top center;
+	background-attachment: fixed;
+	width: 100vw;
+}
