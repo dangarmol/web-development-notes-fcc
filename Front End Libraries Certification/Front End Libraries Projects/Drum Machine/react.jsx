@@ -129,6 +129,12 @@ class MusicApp extends React.Component {
     }
     
     render() {
+        {
+            const clips = Array.from(document.getElementsByClassName('clip'));
+            clips.forEach(clip => {
+                clip.volume = this.state.volume / 10.0
+            });
+        }
         return (
             <div id="drum-machine">
                 <div className="controls-container">
