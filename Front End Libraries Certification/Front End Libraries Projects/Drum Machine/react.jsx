@@ -59,7 +59,7 @@ class Key extends React.Component {
     render() {
         let currentKey = {};
         for(let key of notes) {
-            if(key.letter = this.props.keyLetter) {
+            if(key.letter === this.props.keyLetter) {
                 currentKey = key;
                 break;
             }
@@ -67,8 +67,7 @@ class Key extends React.Component {
         return (
             <div id={currentKey.name} className="drum-pad">
                 <p>{currentKey.letter}</p>
-                {/*<audio controls volume="0.9" id="audio-example-loud"></audio>}*/}
-                <audio className="clip" id={currentKey.letter} src={currentKey.url}></audio>
+                <audio controls volume={this.props.volume / 10.0} className="clip" id={currentKey.letter} src={currentKey.url}></audio>
             </div>
         )
     }
@@ -83,19 +82,19 @@ class Piano extends React.Component {
         return (
             <div id="piano-keyboard">
                 <div id="row-1" className="piano-row">
-                    <Key keyLetter="Q" />
-                    <Key keyLetter="W" />
-                    <Key keyLetter="E" />
+                    <Key keyLetter="Q" volume={this.props.volume} />
+                    <Key keyLetter="W" volume={this.props.volume} />
+                    <Key keyLetter="E" volume={this.props.volume} />
                 </div>
                 <div id="row-2" className="piano-row">
-                    <Key keyLetter="A" />
-                    <Key keyLetter="S" />
-                    <Key keyLetter="D" />
+                    <Key keyLetter="A" volume={this.props.volume} />
+                    <Key keyLetter="S" volume={this.props.volume} />
+                    <Key keyLetter="D" volume={this.props.volume} />
                 </div>
                 <div id="row-3" className="piano-row">
-                    <Key keyLetter="Z" />
-                    <Key keyLetter="X" />
-                    <Key keyLetter="C" />
+                    <Key keyLetter="Z" volume={this.props.volume} />
+                    <Key keyLetter="X" volume={this.props.volume} />
+                    <Key keyLetter="C" volume={this.props.volume} />
                 </div>
             </div>
         )
@@ -106,11 +105,12 @@ class MusicApp extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			lastSound = "",
-			volume = 5
+			lastSound: "",
+			volume: 5
 		}
 		this.increaseVolume = this.increaseVolume.bind(this);
-		this.decreaseVolume = this.decreaseVolume.bind(this);
+        this.decreaseVolume = this.decreaseVolume.bind(this);
+        this.muteVolume = this.muteVolume.bind(this);
 	}
 	increaseVolume() {
 		this.setState({
@@ -134,10 +134,10 @@ class MusicApp extends React.Component {
                 <div className="controls-container">
                     <p id="display">{this.state.lastSound}</p>
                     <div id="volume-controls">
-                        <button id="volume-up" class="btn btn-block btn-info"><i class="fas fa-volume-up"></i></button>
+                        <button onClick={this.increaseVolume} id="volume-up" class="btn btn-block btn-info"><i class="fas fa-volume-up"></i></button>
                         <p id="current-volume">{this.state.volume}</p>
-                        <button id="volume-down" class="btn btn-block btn-info"><i class="fas fa-volume-down"></i></button>
-                        <button id="volume-mute" class="btn btn-block btn-danger"><i class="fas fa-volume-mute"></i></button>
+                        <button onClick={this.decreaseVolume} id="volume-down" class="btn btn-block btn-info"><i class="fas fa-volume-down"></i></button>
+                        <button onClick={this.muteVolume} id="volume-mute" class="btn btn-block btn-danger"><i class="fas fa-volume-mute"></i></button>
                     </div>
                 </div>
                 <Piano volume={this.state.volume} />
@@ -147,6 +147,5 @@ class MusicApp extends React.Component {
 } 
 
 ReactDOM.render(
-  <MusicApp />,
-  document.getElementById('main')
+  <MusicApp />, document.getElementById("main")
 );
