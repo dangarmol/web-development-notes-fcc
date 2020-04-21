@@ -55,7 +55,7 @@ $(document).ready(function(){
 	
 	renderText();
 
-    $('#editor').keyup(function(){
-        renderText();
-    });
+  $('#editor').keyup(function(){
+      renderText();
+  });
 });

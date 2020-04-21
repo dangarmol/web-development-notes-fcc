@@ -2,54 +2,41 @@ const notes = [
 	{
 		letter: "Q",
         name: "C5",
-        colour: "black",
 		url: "https://freesound.org/data/previews/448/448548_9311684-lq.mp3"
 	}, {
 		letter: "W",
         name: "D5",
-        colour: "white",
 		url: "https://freesound.org/data/previews/448/448619_9311684-lq.mp3"
 	}, {
 		letter: "E",
         name: "E5",
-        colour: "black",
 		url: "https://freesound.org/data/previews/448/448612_9311684-lq.mp3"
 	}, {
 		letter: "A",
         name: "F5",
-        colour: "white",
 		url: "https://freesound.org/data/previews/448/448594_9311684-lq.mp3"
 	}, {
 		letter: "S",
         name: "G5",
-        colour: "black",
 		url: "https://freesound.org/data/previews/448/448553_9311684-lq.mp3"
 	}, {
 		letter: "D",
         name: "A6",
-        colour: "white",
 		url: "https://freesound.org/data/previews/448/448567_9311684-lq.mp3"
 	}, {
 		letter: "Z",
         name: "B6",
-        colour: "black",
 		url: "https://freesound.org/data/previews/448/448534_9311684-lq.mp3"
 	}, {
 		letter: "X",
         name: "C6",
-        colour: "white",
 		url: "https://freesound.org/data/previews/448/448551_9311684-lq.mp3"
 	}, {
 		letter: "C",
         name: "D6",
-        colour: "black",
 		url: "https://freesound.org/data/previews/448/448618_9311684-lq.mp3"
 	}
 ];
-
-//TODO Colour the volume number using jQuery!
-//TODO Colour the keys using jQuery!
-//TODO Colour the keys onClick using jQuery!
 
 class Key extends React.Component {
     constructor(props) {
@@ -67,7 +54,7 @@ class Key extends React.Component {
         return (
             <div id={currentKey.name} className="drum-pad">
                 <p>{currentKey.letter}</p>
-                <audio controls volume={this.props.volume / 10.0} className="clip" id={currentKey.letter} src={currentKey.url}></audio>
+                <audio controls hidden className="clip" id={currentKey.letter} src={currentKey.url}></audio>
             </div>
         )
     }
@@ -81,20 +68,20 @@ class Piano extends React.Component {
     render() {
         return (
             <div id="piano-keyboard">
-                <div id="row-1" className="piano-row">
-                    <Key keyLetter="Q" volume={this.props.volume} />
-                    <Key keyLetter="W" volume={this.props.volume} />
-                    <Key keyLetter="E" volume={this.props.volume} />
+                <div id="column-1" className="piano-col">
+                    <Key keyLetter="Q" />
+                    <Key keyLetter="A" />
+                    <Key keyLetter="Z" />
                 </div>
-                <div id="row-2" className="piano-row">
-                    <Key keyLetter="A" volume={this.props.volume} />
-                    <Key keyLetter="S" volume={this.props.volume} />
-                    <Key keyLetter="D" volume={this.props.volume} />
+                <div id="column-2" className="piano-col">
+                    <Key keyLetter="W" />
+                    <Key keyLetter="S" />
+                    <Key keyLetter="X" />
                 </div>
-                <div id="row-3" className="piano-row">
-                    <Key keyLetter="Z" volume={this.props.volume} />
-                    <Key keyLetter="X" volume={this.props.volume} />
-                    <Key keyLetter="C" volume={this.props.volume} />
+                <div id="column-3" className="piano-col">
+                    <Key keyLetter="E" />
+                    <Key keyLetter="D" />
+                    <Key keyLetter="C" />
                 </div>
             </div>
         )
@@ -105,13 +92,14 @@ class MusicApp extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			lastSound: "",
+			lastSound: "Welcome!",
 			volume: 5
 		}
 		this.increaseVolume = this.increaseVolume.bind(this);
         this.decreaseVolume = this.decreaseVolume.bind(this);
         this.muteVolume = this.muteVolume.bind(this);
-	}
+    }
+    
 	increaseVolume() {
 		this.setState({
 			volume: (this.state.volume + 1 >= 10) ? 10 : this.state.volume + 1
@@ -127,7 +115,12 @@ class MusicApp extends React.Component {
 			volume: 0
 		});
     }
-    
+	componentDidMount() {
+        document.addEventListener('keypress', this.handleKeyPressed);
+    }
+	handleKeyPressed(e) {
+	    window.playNoteFromLetter(String.fromCharCode(e.keyCode).toUpperCase());
+    }
     render() {
         {
             const clips = Array.from(document.getElementsByClassName('clip'));
@@ -140,10 +133,11 @@ class MusicApp extends React.Component {
                 <div className="controls-container">
                     <p id="display">{this.state.lastSound}</p>
                     <div id="volume-controls">
-                        <button onClick={this.increaseVolume} id="volume-up" class="btn btn-block btn-info"><i class="fas fa-volume-up"></i></button>
-                        <p id="current-volume">{this.state.volume}</p>
+							  	<button onClick={this.muteVolume} id="volume-mute" class="btn btn-block btn-danger"><i class="fas fa-volume-mute"></i></button>
+							  	<p> </p>
                         <button onClick={this.decreaseVolume} id="volume-down" class="btn btn-block btn-info"><i class="fas fa-volume-down"></i></button>
-                        <button onClick={this.muteVolume} id="volume-mute" class="btn btn-block btn-danger"><i class="fas fa-volume-mute"></i></button>
+                        <p id="current-volume" class="align-middle">{this.state.volume}</p>
+							  <button onClick={this.increaseVolume} id="volume-up" class="btn btn-block btn-info"><i class="fas fa-volume-up"></i></button>
                     </div>
                 </div>
                 <Piano volume={this.state.volume} />
@@ -155,3 +149,43 @@ class MusicApp extends React.Component {
 ReactDOM.render(
   <MusicApp />, document.getElementById("main")
 );
+
+$("document").ready(function () {
+    $("#C5").css("background-color", "black");
+    $("#C5").css("color", "white");
+	$("#E5").css("background-color", "black");
+    $("#E5").css("color", "white");
+	$("#G5").css("background-color", "black");
+    $("#G5").css("color", "white");
+	$("#B6").css("background-color", "black");
+    $("#B6").css("color", "white");
+	$("#D6").css("background-color", "black");
+    $("#D6").css("color", "white");
+	
+    $('.drum-pad').click(function () {
+        let currentNote = {};
+		for(let note of notes) {
+			if(note.name === this.id) {
+                currentNote = note;
+                break;
+			}
+        }
+        playNote(currentNote);
+    });
+});
+
+function playNoteFromLetter(letter) {
+    for(let note of notes) {
+        if(note.letter === letter) {
+            playNote(note);
+            break;
+        }
+    }
+}
+
+function playNote(note) {
+    $("#display").text(note.name);
+    const playerElement = "#" + note.letter;
+	 document.getElementById(note.letter).currentTime = 0;
+    $(playerElement).trigger("play");
+}
