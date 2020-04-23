@@ -1,3 +1,19 @@
 @import url(http://allfont.net/allfont.css?fonts=digital-7);
 
 /*font-family: 'Digital-7', arial;*/
+
+.number-key {
+	background-color: gray;
+}
+
+.operation-key {
+	background-color: yellow;
+}
+
+.equals-key {
+	background-color: blue;
+}
+
+.clear-key {
+	background-color: red;
+}
