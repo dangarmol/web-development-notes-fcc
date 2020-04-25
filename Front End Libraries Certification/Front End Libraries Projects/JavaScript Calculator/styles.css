@@ -1,23 +1,84 @@
-@import url(http://allfont.net/allfont.css?fonts=digital-7);
-
-/*font-family: 'Digital-7', arial;*/
+@font-face {font-family: "Digital-7"; src: url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.eot"); src: url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.woff") format("woff"), url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.svg#Digital-7") format("svg"); }
 
 :root {
 	background-color: #008080;
 }
 
-.number-key {
-	background-color: gray;
+#main {
+	width: 100vw;
+	height: 100vh;
 }
 
-.operation-key {
-	background-color: yellow;
+#calculator {
+	margin: auto;
+	margin-top: 100px;
+	width: 300px;
+	height: 400px;
+	border: 3px solid black;
+	padding: 10px;
+	background-color: #777;
 }
 
-.equals-key {
-	background-color: blue;
+#double-display {
+	background-color: #607128;
+	border: 1px solid black;
+	height: 100px;
+	margin-bottom: 35px;
+}
+
+.display-style {
+	font-family: "Digital-7";
+	padding-right: 10px;
+	text-align: right;
+	font-size: 20px;
+	letter-spacing: 0.075em;
+}
+
+#keyboard {
+	background-color: black;
+	border: 2px solid black;
+	display: grid;
+	grid: 50px 50px 50px 50px / auto auto auto auto;
+	grid-gap: 2px;
+	grid-column-gap: 2px;
 }
 
 .clear-key {
 	background-color: red;
+	grid-column: 1 / span 2;
+	text-align: center;
+	font-family: 'Share Tech', sans-serif;
+}
+
+.equals-key {
+	background-color: #4470ad;
+	height: 75px;
+	vertical-align: center;
+	text-align: center;
+	font-family: 'Share Tech', sans-serif;
+	padding-top: 27px;
+}
+
+.operation-key {
+	background-color: orange;
+	text-align: center;
+	font-family: 'Share Tech', sans-serif;
+}
+
+.number-key {
+	background-color: #999;
+	text-align: center;
+	font-family: 'Share Tech', sans-serif;
+}
+
+#zero {
+	grid-column: 1 / span 2;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	color: black;
+	font: 14px "Century Gothic", Futura, sans-serif;
 }

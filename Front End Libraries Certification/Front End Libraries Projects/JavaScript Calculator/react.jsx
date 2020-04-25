@@ -160,7 +160,7 @@ class Calculator extends React.Component {
         // This function takes into account things like /- *- +- and exponentials.
         if(operation.includes("Infinity")) return "Infinity";
 
-        let _operation = operation;
+        operation = operation.replace("--", "+").replace("-+", "-");
 
         let firstMinus = false;
         if(operation.length > 0 && operation[0] === "-") {
@@ -234,6 +234,7 @@ class Calculator extends React.Component {
     }
 	operationPressed(operator) {
         let upper = "", lower = "";
+        if(this.state.upperDisplay === "" && operator !== "-") return;
 
         if(["+", "-", "x", "/"].some(symbol => this.state.upperDisplay.includes(symbol))) {
             // If there is already a symbol in the equation...
@@ -326,7 +327,7 @@ class Calculator extends React.Component {
             operationString = this.state.upperDisplay
             const result = this.performOperation(operationString);
 
-            upper = this.state.upperDisplay + "= " + result;
+            upper = this.state.upperDisplay + "=" + result;
             lower = result;
         }
 
@@ -424,8 +425,8 @@ class Calculator extends React.Component {
         return (
             <div id="calculator">
                 <div id="double-display">
-                    <p id="formula-display">{this.state.upperDisplay}</p>
-                    <p id="display">{this.state.lowerDisplay}</p>
+                    <p id="formula-display" className="display-style">{this.state.upperDisplay}</p>
+                    <p id="display" className="display-style">{this.state.lowerDisplay}</p>
                 </div>
                 <Keyboard keyAction = {this.handleKeyBySymbol} />
             </div>
@@ -434,5 +435,5 @@ class Calculator extends React.Component {
 } 
 
 ReactDOM.render(
-  <Calculator />, document.getElementById("main")
+    <Calculator />, document.getElementById("main")
 );
