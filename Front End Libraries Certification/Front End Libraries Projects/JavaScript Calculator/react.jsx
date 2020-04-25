@@ -61,12 +61,16 @@ const CLEAR = "clear-key";
 class Key extends React.Component {
     constructor(props) {
         super(props);
+
+        this.keyPressed = this.keyPressed.bind(this);
+        this.getKeyType = this.getKeyType.bind(this);
     }
 
-    // this.props.keySymbol = "0" (<p> content)
-    // this.props.keyName = "zero" (ID)
+    keyPressed(e) {
+        this.props.keyAction(this.props.keySymbol, this.getKeyType());
+    }
 
-    render() {
+    getKeyType() {
         let keyType = null;
         switch(this.props.keySymbol) {
             case "0":
@@ -97,10 +101,17 @@ class Key extends React.Component {
             default:
                 console.log("Unrecognised key symbol: " + this.props.keySymbol);
         }
+        return keyType;
+    }
+
+    // this.props.keySymbol = "0" (<p> content)
+    // this.props.keyName = "zero" (ID)
+
+    render() {
         return (
             <div id={this.props.keyName} 
-                onClick={this.props.keyAction(this.props.keySymbol, keyType)}
-                className={keyType}>
+                onClick={this.keyPressed}
+                className={this.getKeyType()}>
                 <p className="key-text">{this.props.keySymbol}</p>
             </div>
         )
@@ -149,9 +160,16 @@ class Calculator extends React.Component {
         // This function takes into account things like /- *- +- and exponentials.
         if(operation.includes("Infinity")) return "Infinity";
 
+        let _operation = operation;
+
+        let firstMinus = false;
+        if(operation.length > 0 && operation[0] === "-") {
+            firstMinus = true;
+            operation = operation.slice(1);
+        }
         let result = "";
         let operator = operation.replace(/[\d.]/g, "").replace("E+", "").replace("E-", "");
-        const number1 = operation.split(operator).length === 2 ?
+        let number1 = operation.split(operator).length === 2 ?
                         operation.split(operator)[0] :
                         operation.split(operator)[0] + operator + operation.split(operator)[1];
         let number2 = operation.split(operator).length === 2 ?
@@ -161,19 +179,29 @@ class Calculator extends React.Component {
             number2 = operator[1] + number2;
             operator = operator[0];
         }
+        if(firstMinus) {
+            number1 = "-" + number1;
+        }
         switch(operator) {
             case "+":
                 result = (parseFloat(number1) + parseFloat(number2)).toFixed(10);
                 break;
             case "-":
                 result = (parseFloat(number1) - parseFloat(number2)).toFixed(10);
-                break;
+                break; 
             case "x":
                 result = (parseFloat(number1) * parseFloat(number2)).toFixed(10);
                 break;
             case "/":
                 result = (parseFloat(number1) / parseFloat(number2)).toFixed(10);
                 break;
+        }
+
+        let index = result.length - 1;
+
+        while(index >= 1 && result.includes(".") && (result[index] == 0 || result[index] == ".")) {
+            result = result.slice(0, -1);
+            index--;
         }
 
         return result;
@@ -201,7 +229,7 @@ class Calculator extends React.Component {
                 this.clearPressed();
                 break;
             default:
-                console.log("Unrecognised key symbol: " + this.props.keySymbol);
+                console.log("Unrecognised key type: " + type);
         }
     }
 	operationPressed(operator) {
@@ -218,19 +246,30 @@ class Calculator extends React.Component {
             } else if(["+", "-", "x", "/"].some(symbol => this.state.lowerDisplay === (symbol))) {
                 // If last key pressed was an operator.
                 
-                if(this.state.lowerDisplay !== "-") {
+                if(this.state.lowerDisplay !== "-" && operator === "-") {
                     // If last operation wasn't a subtraction, negative numbers are allowed.
-                    // Otherwise, nothing needs to be done.
 
                     upper = this.state.upperDisplay + operator;
+                    lower = operator;
+                } else {
+                    // Otherwise we just replace every current operation with the latest one.
+
+                    let upperFixed = this.state.upperDisplay;
+                    let index = upperFixed.length - 1;
+
+                    while(index > 0 && (["+", "-", "x", "/"].some(symbol => upperFixed[index] === (symbol)))) {
+                        upperFixed = upperFixed.slice(0, -1);
+                        index--;
+                    }
+
+                    upper = upperFixed + operator;
                     lower = operator;
                 }
             } else {
                 // If there is already a full operation, execute it and call this method again recursively.
 
-                this.equalsPressed();
-                this.operatorPressed(operator);
-                return;
+                upper = this.performOperation(this.state.upperDisplay) + operator;
+                lower = operator;
             }
         } else {
             // There is no symbol in the equation yet.
@@ -270,7 +309,7 @@ class Calculator extends React.Component {
                 upperDisplay: this.state.upperDisplay.slice(0, -1),
                 lowerDisplay: this.state.lowerDisplay
             });
-            
+
             this.equalsPressed();
             return;
 
@@ -315,6 +354,11 @@ class Calculator extends React.Component {
                 upper = this.state.upperDisplay + ".";
             }
             lower = this.state.lowerDisplay + ".";
+        } else {
+            // If there is a decimal point already in the number.
+
+            upper = this.state.upperDisplay;
+            lower = this.state.lowerDisplay;
         }
 
         this.setState({
@@ -329,7 +373,7 @@ class Calculator extends React.Component {
         if(["+", "-", "x", "/"].some(symbol => this.state.lowerDisplay === symbol)) {
             // If the lower display is a symbol.
             
-            upper = this.state.upper + number;
+            upper = this.state.upperDisplay + number;
             lower = number;
         } else if(this.state.lowerDisplay === "0") {
             // If the lower display is zero.
@@ -379,9 +423,9 @@ class Calculator extends React.Component {
     render() {
         return (
             <div id="calculator">
-                <div id="display">
-                    <p id="upper-display">{this.state.upperDisplay}</p>
-                    <p id="lower-display">{this.state.lowerDisplay}</p>
+                <div id="double-display">
+                    <p id="formula-display">{this.state.upperDisplay}</p>
+                    <p id="display">{this.state.lowerDisplay}</p>
                 </div>
                 <Keyboard keyAction = {this.handleKeyBySymbol} />
             </div>

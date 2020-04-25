@@ -2,6 +2,10 @@
 
 /*font-family: 'Digital-7', arial;*/
 
+:root {
+	background-color: #008080;
+}
+
 .number-key {
 	background-color: gray;
 }
