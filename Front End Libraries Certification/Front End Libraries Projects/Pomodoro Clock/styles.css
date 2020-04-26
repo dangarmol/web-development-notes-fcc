@@ -1,0 +1,110 @@
+@font-face {font-family: "Digital-7"; src: url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.eot"); src: url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.woff") format("woff"), url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/58045dabdc3a361cb9bb9faf2f1dd1f3.svg#Digital-7") format("svg"); }
+
+:root {
+	background-color: #33d3ff;
+}
+
+#title {
+	font-family: Bangers;
+	letter-spacing: 0.05em;
+	text-shadow: 1px 1px white;
+}
+
+.arrow-up {
+	color: green;
+	font-size: 30px;
+	text-shadow: 1px 1px black;
+}
+
+.arrow-down {
+	color: red;
+	font-size: 30px;
+	text-shadow: 1px 1px black;
+}
+
+.digital-style {
+	font-family: "Digital-7";
+	background-color: black;
+	color: orange;
+	font-size: 35px;
+	width: 100px;
+	text-align: center;
+	padding-top: 4px;
+	margin: auto;
+	border: 2px solid gray;
+}
+
+.label-style {
+	font-family: Anton;
+	font-size: 25px;
+}
+
+#timer-label {
+	font-family: Righteous;
+	font-size: 25px;
+}
+
+#time-left {
+	color: red;
+}
+
+#container {
+	margin: auto;
+	width: 600px;
+	height: auto;
+	text-align: center;
+	border: 5px ridge gray;
+	padding-bottom: 20px;
+	margin-top: 90px;
+	background-color: #39f;
+	box-shadow:20px 20px 12px black;
+}
+
+.pause-style {
+	color: #e6db10;
+	font-size: 30px;
+	text-shadow: 1px 1px black;
+}
+
+.play-style {
+	color: #89e610;
+	font-size: 30px;
+	text-shadow: 1px 1px black;
+}
+
+.reset-style {
+	color: #444;
+	font-size: 25px;
+	text-shadow: 1px 1px black;
+	padding-top: 3px;
+	padding-left: 27px;
+}
+
+.control-style {
+	display: flex;
+	padding-right: 30px;
+	padding-left: 30px;
+	padding-bottom: 10px;
+}
+
+#session-decrement {
+	padding-left: 55px;
+}
+
+#break-decrement {
+	padding-left: 76px;
+}
+
+#button-box {
+	padding-top: 10px;
+	display: flex;
+	padding-left: 260px;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	color: black;
+	font: 14px "Century Gothic", Futura, sans-serif;
+}
