@@ -2,6 +2,12 @@ const quotesURL = "https://gist.githubusercontent.com/camperbot/5a022b72e96c4c95
 
 let allQuotes = {};
 
+$.ajaxSetup({
+	// Not always a good idea but will do the job in this case.
+	// Necessary for the quotes box not to appear empty if the request is too slow even if the page takes a bit longer to load.
+   async: false
+});
+
 $.getJSON(quotesURL, function(data) {
 	allQuotes = data;
 });

@@ -22,3 +22,11 @@ header {
 	display: grid;
 	grid-template-columns: 1fr 4fr;
 }
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	color: black;
+	font: 14px "Century Gothic", Futura, sans-serif;
+}

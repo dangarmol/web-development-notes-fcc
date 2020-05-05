@@ -1,14 +1,14 @@
-<!-- Hosted on https://codepen.io/danielgarm/pen/NWqeBme -->
+<!-- See it working on https://codepen.io/danielgarm/full/NWqeBme -->
 
 <head>
-  <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+   <link rel="stylesheet" type="text/css" href="styles.css">
+   <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
 </head>
 
 <body>
-    <h1 id="title">Hiking club survey</h1>
-    <p id="description">Just a survey of random stuff.</p>
-    <form id="survey-form">
+   <h1 id="title">Hiking club survey</h1>
+   <p id="description">Just a survey of random stuff.</p>
+   <form id="survey-form">
       <label id="name-label" class="top-label">Name*</label>
       <input type="text" id="name" class="line-input" placeholder="Enter your name" required>
       <br>
@@ -20,29 +20,31 @@
       <br>
       <label for="Sex" class="top-label">Sex*</label>
       <select id="dropdown" class="line-input">
-        <option value="male">Male</option>
-        <option value="female">Female</option>
+         <option value="male">Male</option>
+         <option value="female">Female</option>
       </select>
       <br>
       <label class="top-label">Favourite Location:</label>
       <div class="choose-div">
-        <label for="mountain" class="choose-label"><input id="mountain" type="radio" name="destination" value="mountain" checked> Mountain</label>
-        <br>
-        <label for="jungle" class="choose-label"><input id="jungle" type="radio" name="destination" value="jungle"> Jungle</label>
+         <label for="mountain" class="choose-label"><input id="mountain" type="radio" name="destination" value="mountain" checked> Mountain</label>
+         <br>
+         <label for="jungle" class="choose-label"><input id="jungle" type="radio" name="destination" value="jungle"> Jungle</label>
       </div>
       <br>
       <label class="top-label">Equipment:</label>
       <div class="choose-div">
-    <label id="choose-label" for="boots"><input id="boots" type="checkbox" name="equipment" value="boots" checked> Boots</label>
-      <br>
-    <label id="choose-label" for="jacket"><input id="jacket" type="checkbox" name="equipment" value="jacket"> Jacket</label>
-      <br>
-    <label id="choose-label" for="sticks"><input id="sticks" type="checkbox" name="equipment" value="sticks"> Sticks</label>
+         <label id="choose-label" for="boots"><input id="boots" type="checkbox" name="equipment" value="boots" checked> Boots</label>
+         <br>
+         <label id="choose-label" for="jacket"><input id="jacket" type="checkbox" name="equipment" value="jacket"> Jacket</label>
+         <br>
+         <label id="choose-label" for="sticks"><input id="sticks" type="checkbox" name="equipment" value="sticks"> Sticks</label>
       </div>
       <br>
       <label class="top-label">Comments:</label>
       <textarea id="comments" class="line-input" placeholder="Write your comments here!"></textarea>
       <br>
       <button type="submit" id="submit">Submit</button>
-  </form>
+   </form>
 </body>
+
+<footer>&copy Daniel García Molero 2020</footer>

@@ -87,3 +87,11 @@ nav li {
 	padding: 17px;
 	position: middle;
 }
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	color: white;
+	font: 14px "Century Gothic", Futura, sans-serif;
+}

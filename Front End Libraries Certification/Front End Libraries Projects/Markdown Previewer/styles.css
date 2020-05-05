@@ -68,3 +68,11 @@ textarea {
 	background-attachment: fixed;
 	width: 100vw;
 }
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	color: white;
+	font: 14px "Century Gothic", Futura, sans-serif;
+}

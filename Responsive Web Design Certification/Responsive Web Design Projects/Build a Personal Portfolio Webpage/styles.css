@@ -38,7 +38,6 @@ li {
 	display: grid;
 	grid-template-columns: 50vw 50vw;
 	grid-gap: 3vw;
-	text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -62,7 +61,6 @@ li {
 	position: fixed;
 	background-color: #333;
 	width: 100vw;
-	margins: 0px;
 }
 
 li {
@@ -89,7 +87,6 @@ ul {
 
 .project-image {
 	width: 90%;
-	length: auto;
 	margin-top: 10px;
 }
 
@@ -98,4 +95,12 @@ ul {
 	grid-template-columns: 30vw 30vw 30vw;
 	grid-gap: 3vw;
 	margin-top: 20px;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	color: white;
+	font: 14px "Century Gothic", Futura, sans-serif;
 }
