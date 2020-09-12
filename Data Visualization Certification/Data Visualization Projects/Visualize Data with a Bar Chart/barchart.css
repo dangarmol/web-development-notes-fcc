@@ -47,3 +47,11 @@
 #title {
    text-align: center;
 }
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	color: black;
+	font: 14px "Century Gothic", Futura, sans-serif;
+}
