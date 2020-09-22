@@ -36,7 +36,14 @@ function drawMap(err, geo, edu) {
                .attr("width", containerWidth)
                .attr("height", containerHeight);
    
-   // Thanks to LiChoi for this part:
+   let tooltip = d3.select("#graphics-container")
+                   .append("div")
+                   .style("position", "absolute")
+                   .attr("id", "tooltip")
+                   .text("I'm a tooltip!")
+                   .style("opacity", 0);
+   
+   // Thanks to LiChoi for the topojson information:
    // https://forum.freecodecamp.org/t/choropleth-map-how-to-tackle-without-copy-pasting/302581
    const path = d3.geoPath();
    
@@ -51,8 +58,24 @@ function drawMap(err, geo, edu) {
          return getColor(getPercentage((edu.filter(county => county.fips == d.id ))[0].bachelorsOrHigher, minPercentage, maxPercentage));
       })
       .attr("data-education", function(d) {
-         return edu.filter(county => county.fips == d.id )[0].bachelorsOrHigher;
+         return edu.filter(county => county.fips === d.id )[0].bachelorsOrHigher;
       })
+      .on("mouseover", function(d) {
+         const countyData = edu.filter(function( country ) {
+            return country.fips === d.id;
+         })[0];
+        
+       tooltip.style("opacity", .9)
+              .style("top", (d3.event.pageY + 10) + "px")
+              .style("left", (d3.event.pageX + 10) + "px") 
+              .attr("data-education", countyData.bachelorsOrHigher)
+              .html(function() {
+                  return countyData.area_name + ", " + countyData.state + "<br>" + countyData.bachelorsOrHigher + "% of population";
+              });
+      }) 
+      .on("mouseout", function(d) {
+          tooltip.style("opacity", 0);
+      });
    
    const legendWidth = containerWidth / 3;
    const legendBarsNum = Math.trunc(maxPercentage) - Math.trunc(minPercentage);
