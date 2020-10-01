@@ -24,6 +24,26 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/timestamp", function(req, res) {
+  
+  const dateParsed = new Date();
+
+  res.json({"unix": dateParsed.getTime(), "utc": dateParsed.toUTCString()});
+  
+});
+
+app.get("/api/timestamp/:time", function(req, res) {
+  
+  const dateParsed = /^\d+$/.test(req.params.time) ? new Date(parseInt(req.params.time)) : new Date(req.params.time);
+  // If the date given is only numbers, it is assumed to be in UNIX format, therefore converted to int. Otherwise it's parsed as string.
+
+  if(dateParsed == "Invalid Date") {
+    res.json({"error": "Invalid Date"});
+  } else {
+    res.json({"unix": dateParsed.getTime(), "utc": dateParsed.toUTCString()});
+  }
+  
+});
 
 
 // listen for requests :)
