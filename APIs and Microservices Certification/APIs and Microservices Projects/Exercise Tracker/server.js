@@ -91,8 +91,9 @@ app.post("/api/exercise/add", async (req, res) => {
   } else {
     const newLog = {"description": req.body.description, "duration": req.body.duration, "date": req.body.date};
 
-    User.update({ "_id": req.body.userId }, { $push: { log: newLog } }, {new: true}, function (err, data) {
+    User.findOneAndUpdate({ "_id": req.body.userId }, { $push: { log: newLog } }, {new: true}, function (err, data) {
       if (err) return console.error(err);
+      console.log(data);
       const newAdded = data.log[data.log.length - 1];
       res.json({"_id": data.id, "username": data.username, "date": newAdded.date, "duration": newAdded.duration, "description": newAdded.description});
     });
