@@ -86,22 +86,22 @@ var Person = mongoose.model("Person", personSchema);
 //    ...do your stuff here...
 // });
 
-var createAndSavePerson = function(done) {
-  
-  let personObject = {
+const createAndSavePerson = function(done) {
+
+  const personInstance = Person({
     name: "Daniel",
-    age: 23,
+    age: 24,
     favoriteFoods: ["pizza", "pasta", "salad"]
-  }
+  });
 
-  let myPerson = Person(personObject);
-
-  myPerson.save(function(err, data) {
+  personInstance.save(function(err, data) {
     if (err) return console.error(err);
     done(null, data);
   });
 
 };
+
+createAndSavePerson();
 
 /** 4) Create many People with `Model.create()` */
 
