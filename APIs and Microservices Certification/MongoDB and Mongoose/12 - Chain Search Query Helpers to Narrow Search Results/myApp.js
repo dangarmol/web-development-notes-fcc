@@ -101,7 +101,7 @@ const createAndSavePerson = function(done) {
 
 };
 
-createAndSavePerson();
+createAndSavePerson(function(){console.log("Daniel added!")});
 
 /** 4) Create many People with `Model.create()` */
 
@@ -113,18 +113,20 @@ createAndSavePerson();
 // Model.create() with the argument arrayOfPeople.
 // Note: You can reuse the model you instantiated in the previous exercise.
 
-let arrayOfPeople = [
+const people = [
   {name: "Daniel", age: 23, favoriteFoods: ["IKEA Hot Dogs", "Apples"]},
   {name: "Martin", age: 66, favoriteFoods: ["pizza", "burger"]},
   {name: "Kim", age: 51, favoriteFoods: ["beer", "garlic bread"]}
 ];
 
-let createManyPeople = function(arrayOfPeople, done) {
+const createManyPeople = function(arrayOfPeople, done) {
   Person.create(arrayOfPeople, function (err, data) {
     if (err) return console.log(err);
     done(null, data);
   });
 };
+
+createManyPeople(people, function() {console.log("3 people added!")});
 
 /** # C[R]UD part II - READ #
 /*  ========================= */
