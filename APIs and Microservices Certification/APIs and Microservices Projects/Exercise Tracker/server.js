@@ -33,6 +33,27 @@ const userSchema = new Schema({
 
 var User = mongoose.model("User", userSchema, "exercise-tracker");
 
+function formatDateToEnglish(date) {
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  let dateFields = [];
+
+  const weekDay = daysOfWeek[date.getDay()];
+  const month = months[date.getMonth()];
+  const day = date.toISOString().split('T')[0].split("-")[2];
+  const year = date.toISOString().split('T')[0].split("-")[0];
+
+  dateFields.push(weekDay);
+  dateFields.push(month);
+  dateFields.push(day);
+  dateFields.push(year);
+
+  // "Wed Sep 09 2020"
+
+  return dateFields.join(" ");
+}
+
 /**
  * Return:
  * an object with username and _id
@@ -82,7 +103,7 @@ app.post("/api/exercise/new-user", async (req, res) => {
  */
 app.post("/api/exercise/add", async (req, res) => {
   
-  console.log("POST: Adding exercise " + req.body.description + " to database...")
+  console.log("POST: Adding exercise " + req.body.description + " to database... (Date: " + req.body.date + ").")
 
   const user = await User.findOne({ "_id": req.body.userId });
 
@@ -91,15 +112,41 @@ app.post("/api/exercise/add", async (req, res) => {
   } else {
     const newLog = {"description": req.body.description, "duration": req.body.duration, "date": req.body.date};
 
+    if(!newLog.date) {
+      newLog.date = new Date().toISOString().split('T')[0];
+    }
+
     User.findOneAndUpdate({ "_id": req.body.userId }, { $push: { log: newLog } }, {new: true}, function (err, data) {
       if (err) return console.error(err);
-      console.log(data);
       const newAdded = data.log[data.log.length - 1];
-      res.json({"_id": data.id, "username": data.username, "date": newAdded.date, "duration": newAdded.duration, "description": newAdded.description});
+      res.json({"_id": data.id, "username": data.username, "date": formatDateToEnglish(newAdded.date), "duration": newAdded.duration, "description": newAdded.description});
     });
 
   }
   
+});
+
+/**
+ * Return:
+  [{
+    "_id": "5ec3c38cc530e526ad533782",
+    "username": "5WfZFvsBK",
+  },
+  {
+    "_id": "5ec4b2ea635aa80083cf6057",
+    "username": "fcc_test_15899491559"
+  }]
+  Requires at least one ID in the params. Returns the count and the exercises. It also admits filters.
+ */
+app.get("/api/exercise/users", function (req, res) {
+  
+  console.log("GET: Getting list of users from database...")
+
+  User.find({}).select("_id username").exec(function (err, data) {
+    if (err) return console.log(err);
+    res.json(data);
+  });
+
 });
 
 /**
@@ -124,10 +171,35 @@ app.post("/api/exercise/add", async (req, res) => {
   }
   Requires at least one ID in the params. Returns the count and the exercises. It also admits filters.
  */
-app.get("/api/exercise/log", function(req, res) {
+app.get("/api/exercise/log", function (req, res) {
+  
+  console.log("GET: Getting log from user ID " + req.query.userId + " from database...")
 
-  //req.query.first
-  res.redirect(savedURLs[req.params.identifier]);
+  User.findOne({ "_id": req.query.userId }).lean().exec(function(err, data) {
+    let response = {};
+    response["_id"] = data["_id"];
+    response["username"] = data["username"];
+    response["count"] = data["log"].length;
+    response["log"] = [];
+
+    data.log.forEach(item => {
+      let newItem = {};
+      newItem["description"] = item["description"];
+      newItem["duration"] = item["duration"];
+      newItem["date"] = formatDateToEnglish(item["date"]);
+      
+      if(!req.query.from || new Date(req.query.from) < new Date(newItem["date"])) {
+        if(!req.query.to || new Date(req.query.to) > new Date(newItem["date"])) {
+          if(!req.query.limit || req.query.limit > response["log"].length) {
+            response["log"].push(newItem);
+          }
+        }
+      }
+
+    });
+
+    res.json(response);
+  });
 
 });
 
