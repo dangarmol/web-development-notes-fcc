@@ -4,6 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const bcrypt = require("bcrypt");
 const myDB = require("./connection");
 const fccTesting = require("./freeCodeCamp/fcctesting.js");
 const ObjectID = require("mongodb").ObjectID;
@@ -32,7 +33,8 @@ myDB(async client => {
     res.render(process.cwd() + "/views/pug/index", {
       title: "Connected to Database",
       message: "Please login",
-      showLogin: true
+      showLogin: true,
+      showRegistration: true
     });
   });
 
@@ -45,6 +47,36 @@ myDB(async client => {
       username: req.user.username
     });
   });
+
+  app.route("/register").post((req, res, next) => {
+    myDataBase.findOne({ username: req.body.username }, function(err, user) {
+      if (err) {
+        next(err);
+      } else if (user) {
+        res.redirect("/");
+      } else {
+        const hash = bcrypt.hashSync(req.body.password, 12);
+        myDataBase.insertOne({
+          username: req.body.username,
+          password: hash  // We pass the hashed version of the password instead of the password itself.
+        },
+          (err, doc) => {
+            if (err) {
+              res.redirect("/");
+            } else {
+              // The inserted document is held within
+              // the ops property of the doc
+              next(null, doc.ops[0]);
+            }
+          }
+        )
+      }
+    })
+  },
+    passport.authenticate("local", { failureRedirect: "/" }), (req, res, next) => {
+      res.redirect("/profile");
+    }
+  );
 
   app.get("/logout", (req, res) => {
     req.logout();
@@ -73,7 +105,10 @@ myDB(async client => {
         console.log("User " + username + " attempted to log in.");
         if (err) { return done(err); }
         if (!user) { return done(null, false); }
-        if (password !== user.password) { return done(null, false); }
+        // if (password !== user.password) { return done(null, false); }  // No longer used, as the passwords are hashed by Bcrypt.
+        if (!bcrypt.compareSync(password, user.password)) { 
+          return done(null, false);
+        }
         return done(null, user);
       });
     }
