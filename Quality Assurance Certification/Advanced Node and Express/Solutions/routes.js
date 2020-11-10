@@ -8,11 +8,12 @@ module.exports = function (app, myDataBase) {
         title: "Connected to Database",
         message: "Please login",
         showLogin: true,
-        showRegistration: true
+        showRegistration: true,
+        showSocialAuth: true
       });
    });
   
-    app.post("/login", passport.authenticate("local", { failureRedirect: "/" }), function(req, res) {
+   app.post("/login", passport.authenticate("local", { failureRedirect: "/" }), function(req, res) {
       res.redirect("/profile");
    });
   
@@ -51,7 +52,20 @@ module.exports = function (app, myDataBase) {
         res.redirect("/profile");
       }
    );
-  
+
+   app.get("/auth/github", passport.authenticate("github"));
+
+   app.route("/auth/github/callback").get(passport.authenticate("github", { failureRedirect: "/" }), (req, res) => {
+      req.session.user_id = req.user.id;
+      res.redirect("/chat");
+   });
+
+   app.get("/chat", ensureAuthenticated, (req, res) => {
+      res.render(process.cwd() + "/views/pug/chat", {
+        user: req.user
+      });
+   });
+
    app.get("/logout", (req, res) => {
       req.logout();
       res.redirect("/");
@@ -59,8 +73,8 @@ module.exports = function (app, myDataBase) {
   
    app.use((req, res, next) => {
       res.status(404)
-        .type("text")
-        .send("Error 404: Page not found!");
+         .type("text")
+         .send("Error 404: Page not found!");
    });
 }
 
