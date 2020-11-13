@@ -1,6 +1,6 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const GitHubStrategy = require('passport-github').Strategy;
+const GitHubStrategy = require("passport-github").Strategy;
 const bcrypt = require("bcrypt");
 const ObjectID = require("mongodb").ObjectID;
 
@@ -22,8 +22,7 @@ module.exports = function (app, myDataBase) {
           console.log("User " + username + " attempted to log in.");
           if (err) { return done(err); }
           if (!user) { return done(null, false); }
-          // if (password !== user.password) { return done(null, false); }  // No longer used, as the passwords are hashed by Bcrypt.
-          if (!bcrypt.compareSync(password, user.password)) { 
+          if (!bcrypt.compareSync(password, user.password)) {  // Bcrypt hashes the password and compares with the hashed version in the database.
             return done(null, false);
           }
           return done(null, user);
@@ -40,13 +39,13 @@ module.exports = function (app, myDataBase) {
             {
                $setOnInsert: {
                   id: profile.id,
-                  name: profile.displayName || 'John Doe',
-                  photo: profile.photos[0].value || '',
+                  name: profile.displayName || "John Doe",
+                  photo: profile.photos[0].value || "",
                   email: Array.isArray(profile.emails)
                      ? profile.emails[0].value
-                     : 'No public email',
+                     : "No public email",
                   created_on: new Date(),
-                  provider: profile.provider || ''
+                  provider: profile.provider || ""
                },
                $set: {
                   last_login: new Date()
