@@ -2,17 +2,16 @@ function ConvertHandler() {
   
   this.getNum = function(input) {
     const regex = /[a-zA-Z]/;
-    const slicedInput = input.slice(0, input.search(regex));
-    let evaluatedInput = eval(slicedInput);
+    const unitStartIndex = input.indexOf(input.match(regex));
+    const slicedInput = input.slice(0, unitStartIndex);
+    const evaluatedInput = eval(slicedInput);
     
-    if(slicedInput.includes("//")) {
-      evaluatedInput = null;
+    if((input.match(/\//g) || []).length > 1) {
+      return "invalid";
     }
 
-    if(slicedInput == "") {
+    if(unitStartIndex == 0) {
       return 1;
-    } else if(evaluatedInput == null || isNaN(evaluatedInput)) {
-      return "invalid";
     } else {
       return this.roundTo5(evaluatedInput);
     }
@@ -20,11 +19,17 @@ function ConvertHandler() {
   
   this.getUnit = function(input) {
     const regex = /[a-zA-Z]/;
-    const units = ["gal", "l", "lbs", "kg", "mi", "km"];
-    const slicedInput = input.slice(input.search(regex)).toLowerCase();
+    const units = ['gal','l','mi','km','lbs','kg','GAL','L','MI','KM','LBS','KG'];
+    const unitStartIndex = input.indexOf(input.match(regex));
+
+    if(unitStartIndex < 0) {
+      return "invalid";
+    }
+
+    const slicedInput = input.slice(unitStartIndex);
 
     if(units.includes(slicedInput)) {
-      return slicedInput;
+      return slicedInput.toLowerCase();
     } else {
       return "invalid";
     }

@@ -33,11 +33,11 @@ module.exports = function (app) {
           "string": toString
         })
       } else if (initNum == "invalid" && initUnit == "invalid") {
-        res.json({"error": "invalid number and unit"})
+        res.json({"error": "invalid number and unit"});
       } else if (initNum == "invalid") {
-        res.json({"error": "invalid number"})
+        res.json({"error": "invalid number"});
       } else {
-        res.json({"error": "invalid unit"})
+        res.json({"error": "invalid unit"});
       }
     });
     
