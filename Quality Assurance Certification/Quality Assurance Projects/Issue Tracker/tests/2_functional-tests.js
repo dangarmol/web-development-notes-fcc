@@ -30,15 +30,61 @@ suite('Functional Tests', function() {
       .end(function(err, res){
         assert.equal(res.status, 200);
         
-        //fill me in too!
+        const sent = {
+          issue_title: 'Title',
+          issue_text: 'text',
+          created_by: 'Functional Test - Every field filled in',
+          assigned_to: 'Chai and Mocha',
+          status_text: 'In QA'
+        }
+
+        for (const key in sent) {
+          if (sent.hasOwnProperty(key) && res.body.hasOwnProperty(key)) {
+            assert.equal(sent[key], res.body[key]);
+          }
+        }
+
+        assert.isTrue(res.body.hasOwnProperty("_id"));
+        assert.isTrue(res.body.hasOwnProperty("created_on"));
+        assert.isTrue(res.body.hasOwnProperty("updated_on"));
+        assert.isTrue(res.body.open);
         
-        //done();
+        done();
       });
     });
     
     test('Required fields filled in, Optional Fields Blank', function(done) {
-      
-      //done();
+      chai.request(server)
+      .post('/api/issues/test')
+      .send({
+        issue_title: 'Title',
+        issue_text: 'text',
+        created_by: 'Functional Test - Every field filled in',
+      })
+      .end(function(err, res){
+        assert.equal(res.status, 200);
+        
+        const sent = {
+          issue_title: 'Title',
+          issue_text: 'text',
+          created_by: 'Functional Test - Every field filled in',
+          assigned_to: '',
+          status_text: ''
+        }
+
+        for (const key in sent) {
+          if (sent.hasOwnProperty(key) && res.body.hasOwnProperty(key)) {
+            assert.equal(sent[key], res.body[key]);
+          }
+        }
+
+        assert.isTrue(res.body.hasOwnProperty("_id"));
+        assert.isTrue(res.body.hasOwnProperty("created_on"));
+        assert.isTrue(res.body.hasOwnProperty("updated_on"));
+        assert.isTrue(res.body.open);
+        
+        done();
+      });
     });
     
     test('Missing required fields => { error: "required field(s) missing" }', function(done) {
