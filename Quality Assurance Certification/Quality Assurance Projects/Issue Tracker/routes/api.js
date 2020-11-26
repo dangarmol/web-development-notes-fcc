@@ -63,6 +63,7 @@ module.exports = function (app) {
 
       if(!req.body.issue_title || !req.body.issue_text || !req.body.created_by) {
         res.json({ error: "required field(s) missing" });
+        return;
       }
 
       let newIssueJSON = {
@@ -81,9 +82,11 @@ module.exports = function (app) {
   
       await newIssue.save({new:true}, function(err, data) {
         if (err) return console.error(err);
-        delete newIssueJSON.project;
-        newIssue._id = data._id;
-        res.json(newIssueJSON);
+        let responseJSON = JSON.parse(JSON.stringify(data)); // Simple way of copying the object to allow editing.
+        delete responseJSON["project"];
+        console.log("Inside save promise! This is the response:");
+        console.log(responseJSON);
+        res.json(responseJSON);
       });
       
     })
