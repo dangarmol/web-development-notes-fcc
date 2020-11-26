@@ -41,10 +41,9 @@ module.exports = function (app) {
                     } // RETURN ALL ELEMENTS MATCHING
                   ]*/
 
-      console.log("GET from " + req.params.project);
+      console.log("GET from " + req.params.project + ", query:");
       console.log(req.query);
-      //res.json({"request": "GET from " + project,
-      //          "params": req.query});
+
       const query = req.query;
       query.project = req.params.project;
 
@@ -59,7 +58,8 @@ module.exports = function (app) {
       // PARAMS: project
       // BODY: issue_title*, issue_text*, created_by*, assigned_to, status_text
 
-      console.log("POST on " + req.params.project);
+      console.log("POST on " + req.params.project + ", body:");
+      console.log(req.body);
 
       if(!req.body.issue_title || !req.body.issue_text || !req.body.created_by) {
         res.json({ error: "required field(s) missing" });
@@ -84,8 +84,6 @@ module.exports = function (app) {
         if (err) return console.error(err);
         let responseJSON = JSON.parse(JSON.stringify(data)); // Simple way of copying the object to allow editing.
         delete responseJSON["project"];
-        console.log("Inside save promise! This is the response:");
-        console.log(responseJSON);
         res.json(responseJSON);
       });
       
@@ -95,12 +93,22 @@ module.exports = function (app) {
       // PARAMS: project
       // BODY: _id*, issue_title, issue_text, created_by, assigned_to, status_text, open
 
-      console.log("PUT on " + req.params.project);
+      console.log("PUT on " + req.params.project + ", body:");
+      console.log(req.body);
 
-      const check = await Issue.findOne({ "_id": req.body._id });
+      if(req.body.length == 1 && req.body.hasOwnProperty("_id")) {
+        res.json({ error: "no update field(s) sent", "_id": req.body._id });
+        return;
+      }
 
-      if(!check) {
-        res.json({error: "missing _id"});
+      try {
+        const check = await Issue.findOne({ "_id": req.body._id });
+        if(!check) {
+          res.json({error: "missing _id"});
+          return;
+        }
+      } catch (err) {
+        res.json({ "error": "could not update ", "_id": req.body._id });
         return;
       }
 
@@ -114,45 +122,44 @@ module.exports = function (app) {
         "updated_on": new Date().toISOString()
       }
 
-      if(!updatedObject.issue_title && !updatedObject.issue_text && !updatedObject.created_by && !updatedObject.assigned_to &&
-         !updatedObject.status_text && check.open == updatedObject.open) {
-        res.json({ error: "no update field(s) sent", "_id": req.body._id });
-        return;
-      }
-    
-      for(const property in updatedObject) {
-        if(updatedObject[property] == "") {
-          delete updatedObject[property];
-        }
-      }
-
       try {
         // No need to query by project, as IDs are unique.
         Issue.findOneAndUpdate({ "_id": req.body._id }, updatedObject, {new: true}, function (err, data) {
           if (err) {
             console.error("Error during MongoDB Update!");
             console.error(err);
-            res.json({ "error": "could not update ", "_id": + req.body._id });
-            return;
+            res.json({ "error": "could not update ", "_id": req.body._id });
+          } else {
+            let result = {"result": "successfully updated"};
+            result["_id"] = data._id;
+            res.json(result);
           }
-          let result = {"result": "successfully updated"};
-          result["_id"] = data._id;
-          
-          res.json(result);
         });
       } catch (error) {
         console.log("Try-Catch Error!")
         console.log(error)
-        res.json({ "error": "could not update ", "_id": + req.body._id });
+        res.json({ "error": "could not update ", "_id": req.body._id });
       }
     })
     
     .delete(function (req, res){
       // PARAMS: project
       // BODY: _id*
-      console.log("DELETE from " + req.params.project);
-      res.json({"request": "DELETE from " + project,
-                "id": req.body._id});
+      console.log("DELETE from " + req.params.project + ", body:");
+      console.log(req.body);
+
+      if(!req.body.hasOwnProperty("_id") || !req.body._id) {
+        res.json({ error: "missing _id" });
+        return;
+      }
+
+      Issue.findOneAndDelete({ "_id": req.body._id }, function(err, data) {
+        if(err) {
+          res.json({ "error": "could not delete", "_id": req.body._id });
+        } else {
+          res.json({ "result": "successfully deleted", "_id": req.body._id });
+        }
+      });
     });
     
 };
