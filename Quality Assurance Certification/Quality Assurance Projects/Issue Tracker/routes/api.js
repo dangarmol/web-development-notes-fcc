@@ -79,9 +79,10 @@ module.exports = function (app) {
 
       const newIssue = new Issue(newIssueJSON);
   
-      await newIssue.save(function(err, data) {
+      await newIssue.save({new:true}, function(err, data) {
         if (err) return console.error(err);
         delete newIssueJSON.project;
+        newIssue._id = data._id;
         res.json(newIssueJSON);
       });
       
