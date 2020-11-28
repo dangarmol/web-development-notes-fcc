@@ -21,31 +21,32 @@ class SudokuSolver {
 
   // Only had to make these functions because of the poor design of the unit tests required to pass the challenge.
   validateCheckFields(body) {
-    return !body.hasOwnProperty("puzzle") || !body.hasOwnProperty("coordinate") || !body.hasOwnProperty("value");
+    return body.hasOwnProperty("puzzle") && body.hasOwnProperty("coordinate") && body.hasOwnProperty("value");
   }
 
   validatePuzzleLength(puzzleString) {
-    return puzzleString.length != 81;
+    return puzzleString.length == 81;
   }
 
   validateCoordinate(coordinate) {
-    return !coordinate.match(/^[A-I][1-9]$/gmi);
+    return coordinate.match(/^[A-I][1-9]$/gmi);
   }
 
   validateValue(value) {
-    return isNaN(value) || value > 9 || value < 1;
+    return !isNaN(value) && value <= 9 && value >= 1;
   }
 
   validatePuzzleCharacters(puzzleString) {
     for (const char of puzzleString) {
       if (!["1", "2", "3", "4", "5", "6", "7", "8", "9", "."].includes(char)) {
-        return true;
+        return false;
       }
     }
+    return true;
   }
 
   validateSolveFields(body) {
-    return !body.hasOwnProperty("puzzle");
+    return body.hasOwnProperty("puzzle");
   }
 
   checkPlacement(puzzleArray, index, value) {
