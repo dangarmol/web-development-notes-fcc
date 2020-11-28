@@ -9,7 +9,7 @@ module.exports = function (app) {
   app.route("/api/check")
     .post((req, res) => {
       // Body structure:
-      // {"puzzle": String, "coordinate": String, "value": String}
+      // { "puzzle": String, "coordinate": String, "value": String }
 
       console.log("POST on CHECK");
 
@@ -19,8 +19,8 @@ module.exports = function (app) {
   app.route("/api/solve")
     .post((req, res) => {
       // Body structure:
-      // {"puzzle": String}
-      
+      // { "puzzle": String }
+
       console.log("POST on SOLVE");
 
       const solution = solver.solveString(req.body.puzzle);

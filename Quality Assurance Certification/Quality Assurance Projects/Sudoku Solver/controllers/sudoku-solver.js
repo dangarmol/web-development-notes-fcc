@@ -122,7 +122,7 @@ class SudokuSolver {
             }
           }
         }
-        return;
+        return;                                                           // If you get to this point, you either got a solution or no number was valid.
       }
     }
   }
