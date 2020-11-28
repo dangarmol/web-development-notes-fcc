@@ -13,21 +13,17 @@ module.exports = function (app) {
 
       console.log("POST on CHECK");
 
-      if (!req.body.hasOwnProperty("puzzle") || !req.body.hasOwnProperty("coordinate") || !req.body.hasOwnProperty("value")) {
+      if (solver.validateCheckFields(req.body)) {
         res.json({"error": "Required field(s) missing"});
-      } else if (req.body.puzzle.length != 81) {
+      } else if (solver.validatePuzzleLength(req.body.puzzle)) {
         res.json({"error": "Expected puzzle to be 81 characters long"});
-      } else if (!req.body.coordinate.match(/^[A-I][1-9]$/gmi)) {
+      } else if (solver.validateCoordinate(req.body.coordinate)) {
         res.json({"error": "Invalid coordinate"});
-      } else if (isNaN(req.body.value) || req.body.value > 9 || req.body.value < 1) {
+      } else if (solver.validateValue(req.body.value)) {
         res.json({"error": "Invalid value"});
+      } else if (solver.validatePuzzleCharacters(req.body.puzzle)) {
+        res.json({"error": "Invalid characters in puzzle"});
       } else {
-        for (const char of req.body.puzzle) {
-          if (!["1", "2", "3", "4", "5", "6", "7", "8", "9", "."].includes(char)) {
-            res.json({"error": "Invalid characters in puzzle"});
-            return;
-          }
-        }
         res.json(solver.checkPlacementJSON(req.body.puzzle, req.body.coordinate, req.body.value));
       }
     });
@@ -39,17 +35,13 @@ module.exports = function (app) {
 
       console.log("POST on SOLVE");
 
-      if (!req.body.hasOwnProperty("puzzle")) {
+      if (solver.validateSolveFields(req.body)) {
         res.json({"error": "Required field missing"});
-      } else if (req.body.puzzle.length != 81) {
+      } else if (solver.validatePuzzleLength(req.body.puzzle)) {
         res.json({"error": "Expected puzzle to be 81 characters long"});
+      } else if (solver.validatePuzzleCharacters(req.body.puzzle)) {
+        res.json({"error": "Invalid characters in puzzle"});
       } else {
-        for (const char of req.body.puzzle) {
-          if (!["1", "2", "3", "4", "5", "6", "7", "8", "9", "."].includes(char)) {
-            res.json({"error": "Invalid characters in puzzle"});
-            return;
-          }
-        }
         const solution = solver.solveString(req.body.puzzle);
         if (solution) {
           res.json({"solution": solution});
