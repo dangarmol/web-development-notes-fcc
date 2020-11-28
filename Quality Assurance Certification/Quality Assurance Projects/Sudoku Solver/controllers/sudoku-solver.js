@@ -1,5 +1,11 @@
 class SudokuSolver {
 
+  constructor() {
+    this.puzzleArray = null;
+    this.solutionFound = false;
+  }
+
+  // Board coordinates:
   // / 1 2 3 4 5 6 7 8 9 \
   // A x x x x x x x x x 0
   // B x x x x x x x x x 1
@@ -12,22 +18,28 @@ class SudokuSolver {
   // I x x x x x x x x x 8
   // \ 0 1 2 3 4 5 6 7 8 /
 
-  rowsIndex = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H":7, "I":8};
+  checkPlacement(puzzleArray, index, value) {
+    const row = Math.floor(index / 9);
+    const col = index % 9;
 
-  checkPlacement(puzzleString, coordinate, value) {
-    return this.checkRowPlacement(puzzleString, coordinate[0], value) &&
-           this.checkColPlacement(puzzleString, coordinate[1], value) &&
-           this.checkRegionPlacement(puzzleString, coordinate[0], coordinate[1], value);
+    return this.checkRowPlacement(puzzleArray, row, value) &&
+           this.checkColPlacement(puzzleArray, col, value) &&
+           this.checkRegionPlacement(puzzleArray, row, col, value);
   }
 
   // RETURN EXAMPLES:
   // { "valid": true }
   // { "valid": false, "conflict": [ "row", "column", "region" ] }
   checkPlacementJSON(puzzleString, coordinate, value) {
+    const rowsIndex = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H":7, "I":8};
+    const puzzleArray = puzzleString.split("");
+    const trueRow = rowsIndex[coordinate[0]];
+    const trueColumn = coordinate[1] - 1;
     let conflicts = [];
-    if(!this.checkRowPlacement(puzzleString, coordinate[0], value)) conflicts.push("row");
-    if(!this.checkColPlacement(puzzleString, coordinate[1], value)) conflicts.push("column");
-    if(!this.checkRegionPlacement(puzzleString, coordinate[0], coordinate[1], value)) conflicts.push("region");
+
+    if(!this.checkRowPlacement(puzzleArray, trueRow, value)) conflicts.push("row");
+    if(!this.checkColPlacement(puzzleArray, trueColumn, value)) conflicts.push("column");
+    if(!this.checkRegionPlacement(puzzleArray, trueRow, trueColumn, value)) conflicts.push("region");
 
     let result = {};
     result["valid"] = (conflicts.length == 0);
@@ -38,16 +50,16 @@ class SudokuSolver {
     return result;
   }
   
-  checkRowPlacement(puzzleString, row, value) {
-    const startIndex = this.rowsIndex[row] * 9;
-    const rowContents = puzzleString.slice(startIndex, startIndex + 9);
+  checkRowPlacement(puzzleArray, row, value) {
+    const startIndex = row * 9;
+    const rowContents = puzzleArray.slice(startIndex, startIndex + 9);
     return (!rowContents.includes(value.toString()));
   }
 
-  checkColPlacement(puzzleString, column, value) {
+  checkColPlacement(puzzleArray, column, value) {
     let columnContents = [];
-    for (let i = (column - 1); i < puzzleString.length; i += 9) {
-      columnContents.push(puzzleString[i]);
+    for (let i = column; i < puzzleArray.length; i += 9) {
+      columnContents.push(puzzleArray[i]);
     }
     return (!columnContents.includes(value.toString()));
   }
@@ -63,23 +75,37 @@ class SudokuSolver {
   // X 6 6 X 7 7 X 8 8
   // 6 6 6 7 7 7 8 8 8
   // 6 6 6 7 7 7 8 8 8
-  checkRegionPlacement(puzzleString, row, column, value) {
-    const trueRow = this.rowsIndex[row];
-    const trueColumn = column - 1;
-    const offsetRow = trueRow % 3;
-    const offsetColumn = trueColumn % 3;
-    const regionInitial = (trueRow - offsetRow) * 9 + (trueColumn - offsetColumn);
+  checkRegionPlacement(puzzleArray, row, column, value) {
+    const offsetRow = row % 3;
+    const offsetColumn = column % 3;
+    const regionInitial = (row - offsetRow) * 9 + (column - offsetColumn);
 
     // This is probably more easily readable than a for loop.
-    let regionContents = puzzleString.slice(regionInitial, regionInitial + 3);
-    regionContents += puzzleString.slice(regionInitial + 9, regionInitial + 12);
-    regionContents += puzzleString.slice(regionInitial + 18, regionInitial + 21);
+    let regionContents = puzzleArray.slice(regionInitial, regionInitial + 3);
+    regionContents += puzzleArray.slice(regionInitial + 9, regionInitial + 12);
+    regionContents += puzzleArray.slice(regionInitial + 18, regionInitial + 21);
 
     return (!regionContents.includes(value.toString()));
   }
 
-  solve(puzzleString) {
-    
+  solveString(puzzleString) {
+    this.puzzleArray = puzzleString.split("");
+    this.solutionFound = false;
+    this.solve();
+  }
+
+  solve() {
+    if (!this.solutionFound) {
+      for (let index = 0; index < this.puzzleArray.length; index++) {
+        if (this.puzzleArray[index] === ".") {
+          for (let number = 1; number <= 9; number++) {
+            if (this.checkPlacement(this.puzzleArray)) {
+  
+            }
+          }
+        }
+      }
+    }
   }
 }
 
