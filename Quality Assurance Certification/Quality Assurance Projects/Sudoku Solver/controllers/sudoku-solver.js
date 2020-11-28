@@ -2,7 +2,8 @@ class SudokuSolver {
 
   constructor() {
     this.puzzleArray = null;
-    this.solutionFound = false;
+    this.blanks = 0;
+    this.solution = null;
   }
 
   // Board coordinates:
@@ -87,23 +88,41 @@ class SudokuSolver {
 
     return (!regionContents.includes(value.toString()));
   }
-
+  
   solveString(puzzleString) {
     this.puzzleArray = puzzleString.split("");
-    this.solutionFound = false;
+    this.blanks = 0;
+    this.solution = null;
+    for (const elem of this.puzzleArray) {
+      if (elem === ".") {
+        this.blanks++;
+      }
+    }
     this.solve();
+    if (this.solution) {
+      return this.solution.join("");
+    } else {
+      return false;
+    }
   }
 
   solve() {
-    if (!this.solutionFound) {
-      for (let index = 0; index < this.puzzleArray.length; index++) {
-        if (this.puzzleArray[index] === ".") {
-          for (let number = 1; number <= 9; number++) {
-            if (this.checkPlacement(this.puzzleArray)) {
-  
+    for (let index = 0; index < this.puzzleArray.length; index++) {       // Iterating through all cells in order.
+      if (this.puzzleArray[index] === ".") {                              // If a cell is empty...
+        for (let number = 1; number <= 9; number++) {                     // We try every possible number.
+          if (this.checkPlacement(this.puzzleArray, index, number)) {     // If the number can be placed legally...
+            this.puzzleArray[index] = number.toString();                  // It is placed in the empty cell.
+            this.blanks--;                                                // The number of empty cells decreases.
+            if (this.blanks > 0) {                                        // If there are still empty cells...
+              this.solve();                                               // We call the function recursively to continue solving.
+              this.puzzleArray[index] = ".";                              // If the function doesn't find a solution and returns, we remove the last number we put on (backtracking).
+              this.blanks++;                                              // Since we removed an element, there is now a new blank.
+            } else {                                                      // But if all our cells are empty...
+              this.solution = [...this.puzzleArray];                      // We can copy the array and this will be our solution!
             }
           }
         }
+        return;
       }
     }
   }

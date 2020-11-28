@@ -11,15 +11,24 @@ module.exports = function (app) {
       // Body structure:
       // {"puzzle": String, "coordinate": String, "value": String}
 
-      console.log("POST on CHECK, body:");
-      console.log(req.body);
+      console.log("POST on CHECK");
 
       res.json(solver.checkPlacementJSON(req.body.puzzle, req.body.coordinate, req.body.value));
     });
     
   app.route("/api/solve")
     .post((req, res) => {
-      console.log("POST on SOLVE, body:");
-      console.log(req.body);
+      // Body structure:
+      // {"puzzle": String}
+      
+      console.log("POST on SOLVE");
+
+      const solution = solver.solveString(req.body.puzzle);
+
+      if (solution) {
+        res.json({"solution": solution});
+      } else {
+        res.json({"error": "Puzzle cannot be solved"});
+      }
     });
 };
