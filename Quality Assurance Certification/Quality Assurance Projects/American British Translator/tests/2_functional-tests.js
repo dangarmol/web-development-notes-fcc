@@ -15,7 +15,7 @@ suite('Functional Tests', () => {
       const locale = 'american-to-british';
       const output = {
         text: "Mangoes are my favorite fruit", 
-        translation: "Mangoes are my <span class='highlight'>favourite</span> fruit."
+        translation: 'Mangoes are my <span class="highlight">favourite</span> fruit.'
       };
       chai.request(server)
         .post('/api/translate')

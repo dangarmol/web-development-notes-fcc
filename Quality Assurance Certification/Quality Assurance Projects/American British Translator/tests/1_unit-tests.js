@@ -157,14 +157,14 @@ suite('Unit Tests', () => {
     suite('Highlight American to British English', () => {
       test('Highlight "Mangoes" in the "Mangoes are my favorite fruit." translation', done => {
         const input = 'Mangoes are my favorite fruit.';
-        const output = "Mangoes are my <span class='highlight'>favourite</span> fruit.";
+        const output = 'Mangoes are my <span class="highlight">favourite</span> fruit.';
 		    assert.equal(output, tl.translate(input, true, true));
         done();
       });
 
       test('Highlight "yoghurt" in the "I ate yogurt for breakfast." translation', done => {
         const input = 'I ate yogurt for breakfast.';
-        const output = "I ate <span class='highlight'>yoghurt</span> for breakfast.";
+        const output = 'I ate <span class="highlight">yoghurt</span> for breakfast.';
 		    assert.equal(output, tl.translate(input, true, true));
         done();
       });
@@ -173,14 +173,14 @@ suite('Unit Tests', () => {
     suite('Highlight British to American English', () => {
       test('Highlight "soccer" in the "We watched the footie match for a while." translation', done => {
         const input = 'We watched the footie match for a while.';
-        const output = "We watched the <span class='highlight'>soccer</span> match for a while.";
+        const output = 'We watched the <span class="highlight">soccer</span> match for a while.';
 		    assert.equal(output, tl.translate(input, false, true));
         done();
       });
 
       test('Highlight "Paracetamol" in the "Paracetamol takes up to an hour to work." translation"', done => {
         const input = 'Paracetamol takes up to an hour to work.';
-        const output = "<span class='highlight'>Tylenol</span> takes up to an hour to work.";
+        const output = '<span class="highlight">Tylenol</span> takes up to an hour to work.';
 		    assert.equal(output, tl.translate(input, false, true));
         done();
       });

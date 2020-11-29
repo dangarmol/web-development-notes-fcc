@@ -74,7 +74,7 @@ class Translator {
    }
 
    getHighlighted(text) {
-      return "<span class='highlight'>" + text + "</span>";
+      return '<span class="highlight">' + text + '</span>';
    }
 }
 
