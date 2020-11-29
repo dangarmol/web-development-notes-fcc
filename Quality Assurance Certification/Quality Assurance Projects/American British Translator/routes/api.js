@@ -9,7 +9,7 @@ module.exports = function (app) {
   app.route('/api/translate')
     .post((req, res) => {
       
-      if(isValidBody(req.body)) {
+      if(!getErrors(req.body)) {
         let result = {
           "text": req.body.text,
           "translation": translator.translate(req.body.text, req.body.locale == "american-to-british" ? true : false, true)
@@ -19,14 +19,14 @@ module.exports = function (app) {
         }
         res.json(result);
       } else {
-        res.json(isValidBody(req.body));
+        res.json(getErrors(req.body));
       }
     });
 };
 
 // Return true if the body is valid.
 // Return a JSON object with the error otherwise.
-function isValidBody(body) {
+function getErrors(body) {
 
   if (!body.hasOwnProperty("text") || !body.hasOwnProperty("locale")) { 
     return {"error": "Required field(s) missing"};
@@ -35,6 +35,6 @@ function isValidBody(body) {
   } else if (body.text.trim().length === 0) {
     return {"error": "No text to translate"};
   } else {
-    return true;
+    return false;
   }
 }
