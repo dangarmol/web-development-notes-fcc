@@ -11,7 +11,7 @@ suite('Functional Tests', () => {
 
   suite('"POST" to /api/translate', () => {
     test('POST with text and locale fields populated', done => { 
-      const text = "'Mangoes are my favorite fruit.'";
+      const text = "Mangoes are my favorite fruit.";
       const locale = 'american-to-british';
       const output = {
         text: "Mangoes are my favorite fruit", 
@@ -30,7 +30,7 @@ suite('Functional Tests', () => {
     });
 
     test('POST with text and invalid locale', done => {
-      const text = "'Mangoes are my favorite fruit.'";
+      const text = "Mangoes are my favorite fruit.";
       const locale = 'russian-to-spanish';
       const error = { error: 'Invalid value for locale field' };
       chai.request(server)
@@ -63,10 +63,10 @@ suite('Functional Tests', () => {
     test('POST with missing locale field', done => {
       const text = "freeCodeCamp rocks!";
       const error = { error: 'Required field(s) missing' }
-		chai.request(server)
+		  chai.request(server)
         .post('/api/translate')
         .set('content-type', 'application/x-www-form-urlencoded')
-        .send({"text": text, "locale": locale})
+        .send({"text": text})
         .end(function(err, res){
           assert.equal(res.status, 200);
 			    assert.isTrue(res.body.hasOwnProperty("error"));
@@ -82,7 +82,7 @@ suite('Functional Tests', () => {
       chai.request(server)
           .post('/api/translate')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({"text": text, "locale": locale})
+          .send({"locale": locale})
           .end(function(err, res){
             assert.equal(res.status, 200);
             assert.isTrue(res.body.hasOwnProperty("error"));
