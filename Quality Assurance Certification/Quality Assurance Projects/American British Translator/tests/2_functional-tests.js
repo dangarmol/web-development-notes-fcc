@@ -23,7 +23,7 @@ suite('Functional Tests', () => {
         .send({"text": text, "locale": locale})
         .end(function(err, res){
           assert.equal(res.status, 200);
-			 assert.isTrue(res.body.hasOwnProperty("text") && res.body.hasOwnProperty("translation"));
+			    assert.isTrue(res.body.hasOwnProperty("text") && res.body.hasOwnProperty("translation"));
           assert.equal(res.body.translation, output.translation);
           done();
 	   });
@@ -39,7 +39,7 @@ suite('Functional Tests', () => {
         .send({"text": text, "locale": locale})
         .end(function(err, res){
           assert.equal(res.status, 200);
-			 assert.isTrue(res.body.hasOwnProperty("error"));
+			    assert.isTrue(res.body.hasOwnProperty("error"));
           assert.equal(res.body.error, error.error);
           done();
 	   });
@@ -54,7 +54,7 @@ suite('Functional Tests', () => {
         .send({"text": text, "locale": locale})
         .end(function(err, res){
           assert.equal(res.status, 200);
-			 assert.isTrue(res.body.hasOwnProperty("error"));
+			    assert.isTrue(res.body.hasOwnProperty("error"));
           assert.equal(res.body.error, error.error);
           done();
 	   });
@@ -69,7 +69,7 @@ suite('Functional Tests', () => {
         .send({"text": text, "locale": locale})
         .end(function(err, res){
           assert.equal(res.status, 200);
-			 assert.isTrue(res.body.hasOwnProperty("error"));
+			    assert.isTrue(res.body.hasOwnProperty("error"));
           assert.equal(res.body.error, error.error);
           done();
 	   });
@@ -79,16 +79,16 @@ suite('Functional Tests', () => {
       const text = "";
       const locale = "american-to-british";
       const error = { error: 'No text to translate' }
-		chai.request(server)
-        .post('/api/translate')
-        .set('content-type', 'application/x-www-form-urlencoded')
-        .send({"text": text, "locale": locale})
-        .end(function(err, res){
-          assert.equal(res.status, 200);
-			 assert.isTrue(res.body.hasOwnProperty("error"));
-          assert.equal(res.body.error, error.error);
-          done();
-	   });
+      chai.request(server)
+          .post('/api/translate')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({"text": text, "locale": locale})
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.isTrue(res.body.hasOwnProperty("error"));
+            assert.equal(res.body.error, error.error);
+            done();
+          });
     });
 
     test('POST with text that needs no translation', done => {
@@ -98,18 +98,16 @@ suite('Functional Tests', () => {
         text: "SaintPeter and nhcarrigan say hello!", 
         translation: "Everything looks good to me!"
       }
-		chai.request(server)
-        .post('/api/translate')
-        .set('content-type', 'application/x-www-form-urlencoded')
-        .send({"text": text, "locale": locale})
-        .end(function(err, res){
-          assert.equal(res.status, 200);
-			 assert.isTrue(res.body.hasOwnProperty("text") && res.body.hasOwnProperty("translation"));
-          assert.equal(res.body.translation, output.translation);
-          done();
-	   });
-    });
-
+      chai.request(server)
+          .post('/api/translate')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({"text": text, "locale": locale})
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.isTrue(res.body.hasOwnProperty("text") && res.body.hasOwnProperty("translation"));
+            assert.equal(res.body.translation, output.translation);
+            done();
+          });
+      });
   });  
-
 });
