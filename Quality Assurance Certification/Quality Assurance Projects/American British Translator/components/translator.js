@@ -56,10 +56,17 @@ class Translator {
 
       for(const word of Object.keys(currentDictionary)) {
          if (returnText.includes(word)) {
-            // replaceAll() is only supported since August 2020 so not every browser accepts it at the moment. Repl.it doesn't support it either.
-            // returnText = returnText.replaceAll(word, highlight ? this.getHighlighted(currentDictionary[word]) : currentDictionary[word]);
-            // Here is another option (slower, but simple, if performance is not essential):
-            returnText = returnText.split(word).join(highlight ? this.getHighlighted(currentDictionary[word]) : currentDictionary[word]);
+            const startIndex = returnText.indexOf(word);
+            const letterBefore = (startIndex == 0) ? "." : returnText[startIndex - 1];
+            const letterAfter = ((startIndex + word.length) >= returnText.length) ? "." : returnText[startIndex + word.length];
+            const validChars = [".", "?", " ", ",", "!"];
+
+            if (validChars.includes(letterBefore) && validChars.includes(letterAfter)) {
+               // replaceAll() is only supported since August 2020 so not every browser accepts it at the moment. Repl.it doesn't support it either.
+               // returnText = returnText.replaceAll(word, highlight ? this.getHighlighted(currentDictionary[word]) : currentDictionary[word]);
+               // Here is another option using split() and join() (slower but simpler, if performance is not essential):
+               returnText = returnText.split(word).join(highlight ? this.getHighlighted(currentDictionary[word]) : currentDictionary[word]);
+            }
          }
       }
 
@@ -67,7 +74,7 @@ class Translator {
    }
 
    getHighlighted(text) {
-      return '<span class="highlight">' + text + '</span>';
+      return "<span class='highlight'>" + text + "</span>";
    }
 }
 
