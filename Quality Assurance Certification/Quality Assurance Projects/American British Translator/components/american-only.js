@@ -1,4 +1,5 @@
 // British equivalents of American words
+// Keys are American, values are British!
 
 module.exports = {
   "acclimate": "acclimatise",

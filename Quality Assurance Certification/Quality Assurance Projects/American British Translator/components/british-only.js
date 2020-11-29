@@ -1,4 +1,5 @@
 // American equivalents of British words
+// Keys are British, values are American!
 
 module.exports = {
   "abseil": "rappel",
