@@ -96,7 +96,9 @@ module.exports = function (app) {
       console.log("PUT on " + req.params.project + ", body:");
       console.log(req.body);
 
-      if(req.body.length == 1 && req.body.hasOwnProperty("_id")) {
+      if(req.body.hasOwnProperty("_id") && !req.body.hasOwnProperty("issue_title") && !req.body.hasOwnProperty("issue_text")
+         && !req.body.hasOwnProperty("created_by") && !req.body.hasOwnProperty("assigned_to") && !req.body.hasOwnProperty("status_text")
+         && !req.body.hasOwnProperty("open")) {
         res.json({ error: "no update field(s) sent", "_id": req.body._id });
         return;
       }
@@ -142,7 +144,7 @@ module.exports = function (app) {
       }
     })
     
-    .delete(function (req, res){
+    .delete(async (req, res) => {
       // PARAMS: project
       // BODY: _id*
       console.log("DELETE from " + req.params.project + ", body:");
@@ -150,6 +152,13 @@ module.exports = function (app) {
 
       if(!req.body.hasOwnProperty("_id") || !req.body._id) {
         res.json({ error: "missing _id" });
+        return;
+      }
+
+      const check = await Issue.findOne({ "_id": req.body._id });
+
+      if(!check) {
+        res.json({ "error": "could not delete", "_id": req.body._id });
         return;
       }
 
