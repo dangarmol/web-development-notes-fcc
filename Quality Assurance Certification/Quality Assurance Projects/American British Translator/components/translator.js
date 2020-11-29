@@ -51,15 +51,24 @@ class Translator {
    }
 
    translateWords(text, toBritish, highlight) {
-      const words = text.split(" ");
       const currentDictionary = toBritish ? this.completeAmericanToBritish : this.completeBritishToAmerican;
-      let returnWords = [];
+      let returnText = text;
 
-      for (const word of words) {
-         // Probably one of the most ridiculously complicated lines I've ever written, but it's somewhat necessary to avoid problems with the Regex capture groups.
-         returnWords.push(word.replace(/(^[-'0-9a-zÀ-ÿ]+)(.*$)/i, currentDictionary.hasOwnProperty("$1") ? (highlight ? (this.getHighlighted(currentDictionary["$1"] + "$2")) : (currentDictionary["$1"] + "$2")) : (word)));
-      }                                                                                           // ^ This is being sent as "$1"!
-      return returnWords.join(" ");
+      for(const word of Object.keys(currentDictionary)) {
+         if (returnText.includes(word)) {
+            // replaceAll() is only supported since August 2020 so not every browser accepts it at the moment. Repl.it doesn't support it either.
+            // returnText = returnText.replaceAll(word, highlight ? this.getHighlighted(currentDictionary[word]) : currentDictionary[word]);
+            // Here is another option (slower, but simple, if performance is not essential):
+            returnText = returnText.split(word).join(highlight ? this.getHighlighted(currentDictionary[word]) : currentDictionary[word]);
+         }
+      }
+
+      return returnText;
+   }
+
+   hasProperty(dict, word) {
+      console.log(word);
+      return dict.hasOwnProperty(word);
    }
 
    getHighlighted(text) {
