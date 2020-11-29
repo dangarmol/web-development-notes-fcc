@@ -66,11 +66,6 @@ class Translator {
       return returnText;
    }
 
-   hasProperty(dict, word) {
-      console.log(word);
-      return dict.hasOwnProperty(word);
-   }
-
    getHighlighted(text) {
       return '<span class="highlight">' + text + '</span>';
    }
