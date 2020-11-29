@@ -51,7 +51,7 @@ suite('Functional Tests', () => {
       chai.request(server)
         .post('/api/translate')
         .set('content-type', 'application/x-www-form-urlencoded')
-        .send({"text": text, "locale": locale})
+        .send({"locale": locale})
         .end(function(err, res){
           assert.equal(res.status, 200);
 			    assert.isTrue(res.body.hasOwnProperty("error"));
@@ -82,7 +82,7 @@ suite('Functional Tests', () => {
       chai.request(server)
           .post('/api/translate')
           .set('content-type', 'application/x-www-form-urlencoded')
-          .send({"locale": locale})
+          .send({"text": text, "locale": locale})
           .end(function(err, res){
             assert.equal(res.status, 200);
             assert.isTrue(res.body.hasOwnProperty("error"));
