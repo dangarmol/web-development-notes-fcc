@@ -96,6 +96,11 @@ module.exports = function (app) {
       console.log("PUT on " + req.params.project + ", body:");
       console.log(req.body);
 
+      if(!req.body.hasOwnProperty("_id")) {
+        res.json({error: "missing _id"});
+        return;
+      }
+      
       if(req.body.hasOwnProperty("_id") && !req.body.hasOwnProperty("issue_title") && !req.body.hasOwnProperty("issue_text")
          && !req.body.hasOwnProperty("created_by") && !req.body.hasOwnProperty("assigned_to") && !req.body.hasOwnProperty("status_text")
          && !req.body.hasOwnProperty("open")) {
@@ -106,11 +111,11 @@ module.exports = function (app) {
       try {
         const check = await Issue.findOne({ "_id": req.body._id });
         if(!check) {
-          res.json({error: "missing _id"});
+          res.json({ "error": "could not update", "_id": req.body._id });
           return;
         }
       } catch (err) {
-        res.json({ "error": "could not update ", "_id": req.body._id });
+        res.json({ "error": "could not update", "_id": req.body._id });
         return;
       }
 
@@ -128,19 +133,20 @@ module.exports = function (app) {
         // No need to query by project, as IDs are unique.
         Issue.findOneAndUpdate({ "_id": req.body._id }, updatedObject, {new: true}, function (err, data) {
           if (err) {
-            console.error("Error during MongoDB Update!");
-            console.error(err);
-            res.json({ "error": "could not update ", "_id": req.body._id });
+            res.json({ "error": "could not update", "_id": req.body._id });
+            return;
           } else {
             let result = {"result": "successfully updated"};
             result["_id"] = data._id;
             res.json(result);
+            return;
           }
         });
       } catch (error) {
         console.log("Try-Catch Error!")
         console.log(error)
-        res.json({ "error": "could not update ", "_id": req.body._id });
+        res.json({ "error": "could not update", "_id": req.body._id });
+        return;
       }
     })
     

@@ -84,8 +84,7 @@ suite('Functional Tests', function() {
       .post('/api/issues/test')
       .send({
         issue_title: 'Title',
-        issue_text: 'text',
-        created_by: 'Functional Test - Every field filled in',
+        issue_text: 'text'
       })
       .end(function(err, res){
         assert.equal(res.status, 200);
@@ -173,27 +172,19 @@ suite('Functional Tests', function() {
       chai.request(server)
       .put('/api/issues/test')
       .send({
-        _id: '5fc4113e47c6e500b2053172',
+        _id: '5fbecb782025bd03239f4d83',
         issue_text: 'newText'
       })
       .end(function(err, res){
         assert.equal(res.status, 200);
         
-        assert.property(res.body, 'issue_title');
-        assert.property(res.body, 'issue_text');
-        assert.property(res.body, 'created_on');
-        assert.property(res.body, 'updated_on');
-        assert.property(res.body, 'created_by');
-        assert.property(res.body, 'assigned_to');
-        assert.property(res.body, 'open');
-        assert.property(res.body, 'status_text');
-        assert.property(res.body, '_id');
+        assert.property(res.body, 'result');
 
-        assert.equal(res.body.issue_text, "newText");
+        assert.equal(res.body.result, "successfully updated");
       });
       chai.request(server)
       .get('/api/issues/test')
-      .query({_id: '5fc4113e47c6e500b2053172'})
+      .query({_id: '5fbecb782025bd03239f4d83'})
       .end(function(err, res){
         assert.equal(res.status, 200);
         assert.isArray(res.body);
@@ -208,28 +199,20 @@ suite('Functional Tests', function() {
       chai.request(server)
       .put('/api/issues/test')
       .send({
-        _id: '5fc4113e47c6e500b2053172',
+        _id: '5fbecb782025bd03239f4d83',
         issue_text: 'NewNewTextFromPut',
         open: false
       })
       .end(function(err, res){
         assert.equal(res.status, 200);
         
-        assert.property(res.body, 'issue_title');
-        assert.property(res.body, 'issue_text');
-        assert.property(res.body, 'created_on');
-        assert.property(res.body, 'updated_on');
-        assert.property(res.body, 'created_by');
-        assert.property(res.body, 'assigned_to');
-        assert.property(res.body, 'open');
-        assert.property(res.body, 'status_text');
-        assert.property(res.body, '_id');
+        assert.property(res.body, 'result');
 
-        assert.equal(res.body.issue_text, "newText");
+        assert.equal(res.body.result, "successfully updated");
       });
       chai.request(server)
       .get('/api/issues/test')
-      .query({_id: '5fc4113e47c6e500b2053172'})
+      .query({_id: '5fbecb782025bd03239f4d83'})
       .end(function(err, res){
         assert.equal(res.status, 200);
         assert.isArray(res.body);
@@ -280,7 +263,7 @@ suite('Functional Tests', function() {
       chai.request(server)
       .put('/api/issues/test')
       .send({
-        _id: "5f665eb46e296f6b9b6a504d"
+        noID: "5f665eb46e296f6b9b6a504d"
       })
       .end(function(err, res){
         assert.equal(res.status, 200);
@@ -312,23 +295,25 @@ suite('Functional Tests', function() {
           assert.isTrue(res.body.hasOwnProperty("_id"));
 
           validID = res.body._id;
+          
+          chai.request(server)
+          .delete('/api/issues/test')
+          .send({
+            _id: validID
+          })
+          .end(function(err, res){
+          assert.equal(res.status, 200);
+
+          //{"result":"successfully deleted","_id":"5fc41c3947c6e500b205317e"}
+          assert.property(res.body, "result");
+          assert.property(res.body, "_id");
+
+          assert.equal(res.body.result, "successfully deleted");
+          assert.equal(res.body._id, validID);
+          done();
       });
 
-      chai.request(server)
-      .delete('/api/issues/test')
-      .send({
-        _id: validID
-      })
-      .end(function(err, res){
-        assert.equal(res.status, 200);
-
-        //{"result":"successfully deleted","_id":"5fc41c3947c6e500b205317e"}
-        assert.property(res.body, "result");
-        assert.property(res.body, "_id");
-
-        assert.equal(res.body.result, "successfully deleted");
-        assert.equal(res.body._id, validID);
-        done();
+      
       });
     });
 
@@ -346,7 +331,7 @@ suite('Functional Tests', function() {
         assert.property(res.body, "error");
         assert.property(res.body, "_id");
 
-        assert.equal(res.body.result, "could not delete");
+        assert.equal(res.body.error, "could not delete");
         assert.equal(res.body._id, badId);
         done();
       });
@@ -364,7 +349,7 @@ suite('Functional Tests', function() {
         //{ error: "missing _id" }
         assert.property(res.body, "error");
 
-        assert.equal(res.body.result, "missing _id");
+        assert.equal(res.body.error, "missing _id");
         done();
       });
     });
